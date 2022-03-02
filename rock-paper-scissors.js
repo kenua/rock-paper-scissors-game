@@ -5,6 +5,9 @@ function playRound(playerSelection, computerSelection) {
    if (typeof playerSelection !== 'string' || 
        typeof playerSelection !== 'string') throw new Error('playRound expects strings as arguments');
 
+   playerSelection = playerSelection.trim().toLowerCase();
+   computerSelection = computerSelection.trim().toLowerCase();
+
    if (playerSelection === computerSelection) return null;
 
    switch (playerSelection) {
@@ -24,7 +27,7 @@ function playRound(playerSelection, computerSelection) {
          break;
 
       default:
-         result = null;
+         result = undefined;
    }
 
    return result;
@@ -61,9 +64,12 @@ function game() {
       } else if (round === null) {
          console.log(`${computerSelection} againts ${playerSelection}... Draw!`);
          console.log(`player score: ${playerScore} / computer score ${computerScore}`);
-      } else {
+      } else if (round === false) {
          computerScore++;
          console.log(`You lose! ${computerSelection} beats ${playerSelection}`);
+         console.log(`player score: ${playerScore} / computer score ${computerScore}`);
+      } else {
+         console.log('rock, paper, and scissors are the only options you can pick!');
          console.log(`player score: ${playerScore} / computer score ${computerScore}`);
       }
    };
