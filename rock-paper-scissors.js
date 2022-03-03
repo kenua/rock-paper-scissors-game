@@ -54,6 +54,11 @@ const game = (function() {
    const play = function(playerSelection) {
       let computerSelection = computerWeapon();
       let roundResult = playRound(playerSelection, computerSelection);
+      let result = {
+         playerW: playerSelection,
+         computerW: computerSelection,
+         state: roundResult,
+      };
 
       if (_playerScore === 5) {
          return {
@@ -72,28 +77,19 @@ const game = (function() {
 
       if (roundResult) {
          _playerScore++;
-         return {
-            string: `You win! ${playerSelection} beats ${computerSelection}`,
-            playerW: playerSelection,
-            computerW: computerSelection,
-         };
+         result.string = `You win! ${playerSelection} beats ${computerSelection}`;
+         return result;
       } else if (roundResult === null) {
-         return {
-            string: `${playerSelection} againts ${computerSelection}... Draw!`,
-            playerW: playerSelection,
-            computerW: computerSelection,
-         };
+         result.string =  `${playerSelection} againts ${computerSelection}... Draw!`;
+         return result;
       } else if (roundResult === false) {
          _computerScore++;
-         return {
-            string: `You lose! ${computerSelection} beats ${playerSelection}`,
-            playerW: playerSelection,
-            computerW: computerSelection,
-         };
+         result.string = `You lose! ${computerSelection} beats ${playerSelection}`;
+         return result;
       } else {
-         return {
-            string: 'rock, paper, and scissors are the only options you can pick!',
-         };
+         result.string = 'rock, paper, and scissors are the only options you can pick!';
+         result.state = undefined;
+         return result;
       }
    };
 
