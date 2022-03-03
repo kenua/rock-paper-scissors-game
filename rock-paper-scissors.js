@@ -95,25 +95,3 @@ const game = (function() {
 
    return { getScores, play };
 })();
-
-let g1 = game();
-
-console.log( g1('rock') );
-console.log( g1('paper') );
-console.log( g1('scissors') );
-
-/*
-console.log( game2.play('rock') );
-console.log( game2.play('paper') );
-console.log( game2.play('scissors') );
-console.log( game2.play('rock') );
-console.log( game2.play('paper') );
-console.log( game2.play('scissors') );
-console.log( game2.play('rock') );
-console.log( game2.play('paper') );
-console.log( game2.play('scissors') );
-console.log( game2.play('rock') );
-console.log( game2.play('paper') );
-console.log( game2.play('scissors') );
-console.log( game2.getScores() );
-*/
