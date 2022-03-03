@@ -40,37 +40,84 @@ function computerWeapon() {
    return weapons[randomNum];
 }
 
-function game() {
-   let playerScore = 0;
-   let computerScore = 0;
+const game = (function() {
+   let _playerScore = 0;
+   let _computerScore = 0;
 
-   return function(playerSelection) {
+   const getScores = function() {
+      return {
+         player: _playerScore,
+         computer: _computerScore,
+      };
+   };
+
+   const play = function(playerSelection) {
       let computerSelection = computerWeapon();
-      let round = playRound(playerSelection, computerSelection);
-      
-      if (playerScore === 5) { 
-         console.log('Player got 5 points, player wins!');
-         return;
+      let roundResult = playRound(playerSelection, computerSelection);
+
+      if (_playerScore === 5) {
+         return {
+            string: 'Player got 5 points, player wins!',
+            playerW: playerSelection,
+            computerW: computerSelection,
+         };
       }
-      if (computerScore === 5) {
-         console.log('Computer got 5 points, computer wins!');
-         return;
+      if (_computerScore === 5) {
+         return {
+            string: 'Computer got 5 points, computer wins!',
+            playerW: playerSelection,
+            computerW: computerSelection,
+         };
       }
-   
-      if (round) {
-         playerScore++;
-         console.log(`You win! ${playerSelection} beats ${computerSelection}`);
-         console.log(`player score: ${playerScore} / computer score ${computerScore}`);
-      } else if (round === null) {
-         console.log(`${computerSelection} againts ${playerSelection}... Draw!`);
-         console.log(`player score: ${playerScore} / computer score ${computerScore}`);
-      } else if (round === false) {
-         computerScore++;
-         console.log(`You lose! ${computerSelection} beats ${playerSelection}`);
-         console.log(`player score: ${playerScore} / computer score ${computerScore}`);
+
+      if (roundResult) {
+         _playerScore++;
+         return {
+            string: `You win! ${playerSelection} beats ${computerSelection}`,
+            playerW: playerSelection,
+            computerW: computerSelection,
+         };
+      } else if (roundResult === null) {
+         return {
+            string: `${playerSelection} againts ${computerSelection}... Draw!`,
+            playerW: playerSelection,
+            computerW: computerSelection,
+         };
+      } else if (roundResult === false) {
+         _computerScore++;
+         return {
+            string: `You lose! ${computerSelection} beats ${playerSelection}`,
+            playerW: playerSelection,
+            computerW: computerSelection,
+         };
       } else {
-         console.log('rock, paper, and scissors are the only options you can pick!');
-         console.log(`player score: ${playerScore} / computer score ${computerScore}`);
+         return {
+            string: 'rock, paper, and scissors are the only options you can pick!',
+         };
       }
    };
-};
+
+   return { getScores, play };
+})();
+
+let g1 = game();
+
+console.log( g1('rock') );
+console.log( g1('paper') );
+console.log( g1('scissors') );
+
+/*
+console.log( game2.play('rock') );
+console.log( game2.play('paper') );
+console.log( game2.play('scissors') );
+console.log( game2.play('rock') );
+console.log( game2.play('paper') );
+console.log( game2.play('scissors') );
+console.log( game2.play('rock') );
+console.log( game2.play('paper') );
+console.log( game2.play('scissors') );
+console.log( game2.play('rock') );
+console.log( game2.play('paper') );
+console.log( game2.play('scissors') );
+console.log( game2.getScores() );
+*/
