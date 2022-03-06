@@ -1,36 +1,38 @@
-function playRound(playerSelection, computerSelection) {
-   let result = null;
+function playRound(playerSelection = '', computerSelection = '') {
+   let options = {
+      rock: 'rock',
+      scissors: 'scissors',
+      paper: 'paper',
+   };
 
    // return error if parameters are not strings
    if (typeof playerSelection !== 'string' || 
-       typeof playerSelection !== 'string') throw new Error('playRound expects strings as arguments');
+       typeof computerSelection !== 'string') throw new Error('playRound expects non-empty strings as arguments');
 
    playerSelection = playerSelection.trim().toLowerCase();
    computerSelection = computerSelection.trim().toLowerCase();
 
-   if (playerSelection === computerSelection) return null;
+   if (options[playerSelection] === undefined || 
+       options[computerSelection] === undefined) throw new Error('playerSelection or computerSelection are not valid options');
+
+   if (playerSelection === computerSelection) return 'draw';
 
    switch (playerSelection) {
       case 'rock':
-         if (computerSelection === 'scissors') result = true;
-         if (computerSelection === 'paper') result = false;
+         if (computerSelection === 'scissors') return 'win';
+         if (computerSelection === 'paper')    return 'lose';
          break;
 
       case 'scissors':
-         if (computerSelection === 'rock') result = false;
-         if (computerSelection === 'paper') result = true;
+         if (computerSelection === 'paper') return 'win';
+         if (computerSelection === 'rock')  return 'lose';
          break;
 
       case 'paper':
-         if (computerSelection === 'rock') result = true;
-         if (computerSelection === 'scissors') result = false;
+         if (computerSelection === 'rock')     return 'win';
+         if (computerSelection === 'scissors') return 'lose';
          break;
-
-      default:
-         result = undefined;
    }
-
-   return result;
 }
 
 function computerWeapon() {
