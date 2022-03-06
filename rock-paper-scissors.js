@@ -45,6 +45,11 @@ function computerWeapon() {
 const game = (function() {
    let _playerScore = 0;
    let _computerScore = 0;
+   let _checkWinner = function() {
+      if (_playerScore === 5) return 'You have 5 points, you win the game!';
+      if (_computerScore === 5) return 'Computer has 5 points, computer wins the game!';
+      return null;
+   };
 
    const getScores = function() {
       return {
@@ -54,43 +59,48 @@ const game = (function() {
    };
 
    const play = function(playerSelection) {
-      let computerSelection = computerWeapon();
-      let roundResult = playRound(playerSelection, computerSelection);
       let result = {
-         playerW: playerSelection,
-         computerW: computerSelection,
-         state: roundResult,
+         playerSelection,
+         computerSelection: computerWeapon(),
+         message: null,
+         state: null,
       };
+      let winner = _checkWinner();
 
-      if (_playerScore === 5) {
-         return {
-            string: 'Player got 5 points, player wins!',
-            playerW: playerSelection,
-            computerW: computerSelection,
-         };
-      }
-      if (_computerScore === 5) {
-         return {
-            string: 'Computer got 5 points, computer wins!',
-            playerW: playerSelection,
-            computerW: computerSelection,
-         };
+      if (winner) {
+         result.message = winner;
+         result.state = 'finish';
+         return result;
       }
 
-      if (roundResult) {
-         _playerScore++;
-         result.string = `You win! ${playerSelection} beats ${computerSelection}`;
-         return result;
-      } else if (roundResult === null) {
-         result.string =  `${playerSelection} againts ${computerSelection}... Draw!`;
-         return result;
-      } else if (roundResult === false) {
-         _computerScore++;
-         result.string = `You lose! ${computerSelection} beats ${playerSelection}`;
+      let round = playRound(playerSelection, result.computerSelection);
+
+      switch (round) {
+         case 'win':
+            _playerScore++;
+            result.message = `You win! ${playerSelection} beats ${result.computerSelection}`;
+            result.state = round;
+            break;
+
+         case 'lose':
+            _computerScore++;
+            result.message = `You lose! ${result.computerSelection} beats ${playerSelection}`;
+            result.state = round;
+            break;
+
+         case 'draw':
+            result.message = `${playerSelection} againts ${result.computerSelection}? Draw!`;
+            result.state = round;
+            break;
+      }
+
+      winner = _checkWinner();
+
+      if (winner) {
+         result.message = winner;
+         result.state = 'finish';
          return result;
       } else {
-         result.string = 'rock, paper, and scissors are the only options you can pick!';
-         result.state = undefined;
          return result;
       }
    };
