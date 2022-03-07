@@ -8,15 +8,17 @@ const computerScore = document.querySelector('#computer-score');
 const rockBtn = document.querySelector('#rock-button');
 const paperBtn = document.querySelector('#paper-button');
 const scissorsBtn = document.querySelector('#scissors-button');
+const resetBtn = document.querySelector('#reset-button');
+let gameOver = false;
 
-function printPlayersWeapons(playerW, computerW) {
+function printWeapons(playerSelection, computerSelection) {
    let playerImg = new Image();
    let computerImg = new Image();
 
    playerWeaponDisplay.innerHTML = '';
    computerWeaponDisplay.innerHTML = '';
-   playerImg.src = `images/${playerW}.png`;
-   computerImg.src = `images/${computerW}.png`;
+   playerImg.src = `images/${playerSelection}.png`;
+   computerImg.src = `images/${computerSelection}.png`;
    playerWeaponDisplay.append(playerImg);
    computerWeaponDisplay.append(computerImg);
 }
@@ -29,26 +31,39 @@ function updateGameInfo(message) {
    computerScore.textContent = cScore;
 }
 
-function takeTurn(weapon) {
-   let playResult = game.play(weapon);
-   let { player: pScore, computer: cScore } = game.getScores();
+function playMatch(playerSelection) {
+   if (!gameOver) {
+      let matchResult = game.play(playerSelection);   
 
-   console.log(pScore);
-      console.log(cScore);
+      printWeapons(matchResult.playerSelection, matchResult.computerSelection);
+      updateGameInfo(matchResult.message);
 
-   if (pScore === 5 || cScore === 5) {
-      updateGameInfo(playResult.string);
-      return;
-   }
-
-   if (playResult.state === true || playResult.state === false || playResult.state === null) {
-      printPlayersWeapons(playResult.playerW, playResult.computerW);
-      updateGameInfo(playResult.string);
+      if (matchResult.state === 'finish') {
+         gameOver = true;
+         rockBtn.disabled = true;
+         paperBtn.disabled = true;
+         scissorsBtn.disabled = true;
+         resetBtn.style.visibility = 'visible';
+      }
    }
 }
 
-rockBtn.addEventListener('click', () => takeTurn('rock'));
-paperBtn.addEventListener('click', () => takeTurn('paper'));
-scissorsBtn.addEventListener('click', () => takeTurn('scissors'));
+function resetGame() {
+   game.reset();
+   gameOver = false;
+   playerWeaponDisplay.innerHTML = '';
+   computerWeaponDisplay.innerHTML = '';
+   announcer.textContent = '...';
+   playerScore.textContent = 0;
+   computerScore.textContent = 0;
+   rockBtn.disabled = false;
+   paperBtn.disabled = false;
+   scissorsBtn.disabled = false;
+   resetBtn.style.visibility = 'hidden';
+}
 
+rockBtn.addEventListener('click', () => playMatch('rock'));
+paperBtn.addEventListener('click', () => playMatch('paper'));
+scissorsBtn.addEventListener('click', () => playMatch('scissors'));
+resetBtn.addEventListener('click', resetGame);
 

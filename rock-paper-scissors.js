@@ -97,7 +97,7 @@ const game = (function() {
       winner = _checkWinner();
 
       if (winner) {
-         result.message = winner;
+         result.message += '. ' + winner;
          result.state = 'finish';
          return result;
       } else {
@@ -105,5 +105,11 @@ const game = (function() {
       }
    };
 
-   return { getScores, play };
+   const reset = function() {
+      _playerScore = 0;
+      _computerScore = 0;
+      return this;
+   }
+
+   return { getScores, play, reset };
 })();
