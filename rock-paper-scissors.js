@@ -1,36 +1,38 @@
-function playRound(playerSelection, computerSelection) {
-   let result = null;
+function playRound(playerSelection = '', computerSelection = '') {
+   let options = {
+      rock: 'rock',
+      scissors: 'scissors',
+      paper: 'paper',
+   };
 
    // return error if parameters are not strings
    if (typeof playerSelection !== 'string' || 
-       typeof playerSelection !== 'string') throw new Error('playRound expects strings as arguments');
+       typeof computerSelection !== 'string') throw new Error('playRound expects non-empty strings as arguments');
 
    playerSelection = playerSelection.trim().toLowerCase();
    computerSelection = computerSelection.trim().toLowerCase();
 
-   if (playerSelection === computerSelection) return null;
+   if (options[playerSelection] === undefined || 
+       options[computerSelection] === undefined) throw new Error('playerSelection or computerSelection are not valid options');
+
+   if (playerSelection === computerSelection) return 'draw';
 
    switch (playerSelection) {
       case 'rock':
-         if (computerSelection === 'scissors') result = true;
-         if (computerSelection === 'paper') result = false;
+         if (computerSelection === 'scissors') return 'win';
+         if (computerSelection === 'paper')    return 'lose';
          break;
 
       case 'scissors':
-         if (computerSelection === 'rock') result = false;
-         if (computerSelection === 'paper') result = true;
+         if (computerSelection === 'paper') return 'win';
+         if (computerSelection === 'rock')  return 'lose';
          break;
 
       case 'paper':
-         if (computerSelection === 'rock') result = true;
-         if (computerSelection === 'scissors') result = false;
+         if (computerSelection === 'rock')     return 'win';
+         if (computerSelection === 'scissors') return 'lose';
          break;
-
-      default:
-         result = undefined;
    }
-
-   return result;
 }
 
 function computerWeapon() {
@@ -40,37 +42,74 @@ function computerWeapon() {
    return weapons[randomNum];
 }
 
-function game() {
-   let playerScore = 0;
-   let computerScore = 0;
+const game = (function() {
+   let _playerScore = 0;
+   let _computerScore = 0;
+   let _checkWinner = function() {
+      if (_playerScore === 5) return 'You have 5 points, you win the game!';
+      if (_computerScore === 5) return 'Computer has 5 points, computer wins the game!';
+      return null;
+   };
 
-   return function(playerSelection) {
-      let computerSelection = computerWeapon();
-      let round = playRound(playerSelection, computerSelection);
-      
-      if (playerScore === 5) { 
-         console.log('Player got 5 points, player wins!');
-         return;
+   const getScores = function() {
+      return {
+         player: _playerScore,
+         computer: _computerScore,
+      };
+   };
+
+   const play = function(playerSelection) {
+      let result = {
+         playerSelection,
+         computerSelection: computerWeapon(),
+         message: null,
+         state: null,
+      };
+      let winner = _checkWinner();
+
+      if (winner) {
+         result.message = winner;
+         result.state = 'finish';
+         return result;
       }
-      if (computerScore === 5) {
-         console.log('Computer got 5 points, computer wins!');
-         return;
+
+      let round = playRound(playerSelection, result.computerSelection);
+
+      switch (round) {
+         case 'win':
+            _playerScore++;
+            result.message = `You win! ${playerSelection} beats ${result.computerSelection}`;
+            result.state = round;
+            break;
+
+         case 'lose':
+            _computerScore++;
+            result.message = `You lose! ${result.computerSelection} beats ${playerSelection}`;
+            result.state = round;
+            break;
+
+         case 'draw':
+            result.message = `${playerSelection} againts ${result.computerSelection}? Draw!`;
+            result.state = round;
+            break;
       }
-   
-      if (round) {
-         playerScore++;
-         console.log(`You win! ${playerSelection} beats ${computerSelection}`);
-         console.log(`player score: ${playerScore} / computer score ${computerScore}`);
-      } else if (round === null) {
-         console.log(`${computerSelection} againts ${playerSelection}... Draw!`);
-         console.log(`player score: ${playerScore} / computer score ${computerScore}`);
-      } else if (round === false) {
-         computerScore++;
-         console.log(`You lose! ${computerSelection} beats ${playerSelection}`);
-         console.log(`player score: ${playerScore} / computer score ${computerScore}`);
+
+      winner = _checkWinner();
+
+      if (winner) {
+         result.message += '. ' + winner;
+         result.state = 'finish';
+         return result;
       } else {
-         console.log('rock, paper, and scissors are the only options you can pick!');
-         console.log(`player score: ${playerScore} / computer score ${computerScore}`);
+         return result;
       }
    };
-};
+
+   const resetScores = function() {
+      _playerScore = 0;
+      _computerScore = 0;
+      return this;
+   }
+
+   return { getScores, play, resetScores };
+})();
