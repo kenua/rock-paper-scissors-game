@@ -105,11 +105,11 @@ const game = (function() {
       }
    };
 
-   const reset = function() {
+   const resetScores = function() {
       _playerScore = 0;
       _computerScore = 0;
       return this;
    }
 
-   return { getScores, play, reset };
+   return { getScores, play, resetScores };
 })();

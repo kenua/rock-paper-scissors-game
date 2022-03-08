@@ -49,7 +49,7 @@ function playMatch(playerSelection) {
 }
 
 function resetGame() {
-   game.reset();
+   game.resetScores();
    gameOver = false;
    playerWeaponDisplay.innerHTML = '';
    computerWeaponDisplay.innerHTML = '';
