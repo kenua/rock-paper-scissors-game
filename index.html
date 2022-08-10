@@ -5,28 +5,96 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="author" content="Kenua">
+   <!-- GOOGLE FONTS -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="./reset.css">
+   <link rel="stylesheet" href="./styles.css">
    <title>Rock Paper Scissors</title>
-   <link rel="stylesheet" href="styles.css">
-   <script src="rock-paper-scissors.js" defer></script>
-   <script src="dom.js" defer></script>
+   <!--<script src="rock-paper-scissors.js" defer></script>-->
+   <!--<script src="dom.js" defer></script>-->
 </head>
 <body>
-   <p id="game-announcer" class="messages">...</p>
-   <div class="game-display">
-      <div id="player-weapon-display" class="weapon-display"></div>
-      <div id="computer-weapon-display" class="weapon-display"></div>
+   <header class="header barlow--bold">
+      <h1 class="header__heading">Rock<br>Paper<br>Scissors</h1>
+      <div class="header__scores">
+         <div class="scores__item">
+            <p>
+               Your Score 
+               <span id="player-score">0</span>
+            </p>
+         </div>
+         <div class="scores__item">
+            <p>
+               CPU Score 
+               <span id="cpu-score">0</span>
+            </p>
+         </div>
+      </div>
+   </header>
+   <!-- OPTIONS -->
+   <section class="options">
+      <h2 class="barlow--bold sub-heading">Pick an option</h2>
+
+      <div class="options__button-container">
+         <a href="#" id="rock-button" class="option__item barlow--bold">
+            <div class="option__img-container">
+               <img src="./images/rock-icon.png" alt="Fist" class="option__img">
+            </div>
+            
+            <span>Rock</span>
+         </a>
+
+         <a href="#" id="paper-button" class="option__item barlow--bold">
+            <div class="option__img-container">
+               <img src="./images/paper-icon.png" alt="Open hand" class="option__img">
+            </div>
+            
+            <span>Paper</span>
+         </a>
+
+         <a href="#" id="scissors-button" class="option__item barlow--bold">
+            <div class="option__img-container">
+               <img src="./images/scissors-icon.png" alt="Hand and two fingers" class="option__img">
+            </div>
+            
+            <span>Scissors</span>
+         </a>
+      </div>
+   </section>
+   <!-- MATCH RESULT -->
+   <section class="match-result">
+      <h2 id="animated-text" class="barlow--bold sub-heading">Rock, Paper, Scissors!</h2>
+
+      <div class="match__weapons">
+         <div class="match__item barlow--bold">
+            <div class="match__img-container">
+               <img src="./images/paper-icon.png" alt="" id="user-picked__img" class="match__img">
+            </div>
+            
+            <span>You picked</span>
+         </div>
+
+         <img src="./images/x.svg" alt="" width="40" class="match__icon">
+
+         <div id="scissors-button" class="match__item barlow--bold">
+            <div class="match__img-container">
+               <img src="./images/scissors-icon.png" alt="" id="cpu-picked__img" class="match__img">
+            </div>
+            
+            <span>CPU Picked</span>
+         </div>
+      </div>
+
+      <div class="play-again">
+         <h3 id="winner-text" class="barlow--bold">YOU WIN</h3>
+         <button id="play-again-button" class="button barlow--light">Play Again</button>      
+      </div>
+   </section>
+
+   <div class="button-reset-container">
+      <button id="reset-button" class="button button--reset barlow--light">Reset Game</button>
    </div>
-   <p class="messages">
-      Player Score: <span id="player-score">0</span>
-      Computer Score: <span id="computer-score">0</span>
-   </p>
-   <div class="buttons-container">
-      <button id="rock-button" class="weapon-button" type="button"><img src="images/rock.png" alt="Rock"></button>
-      <button id="paper-button" class="weapon-button" type="button"><img src="images/paper.png" alt="Paper"></button>
-      <button id="scissors-button" class="weapon-button" type="button"><img src="images/scissors.png" alt="Scissors"></button>
-   </div>
-   <p class="text-center">
-      <button type="button" id="reset-button" class="btn">Reset</button>
-   </p>
 </body>
 </html>

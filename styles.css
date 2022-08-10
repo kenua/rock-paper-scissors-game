@@ -1,79 +1,224 @@
-* {
-   box-sizing: border-box;
-   padding: 0;
-   margin: 0;
+:root {
+   --primary: #FED330;
+   --secondary: #1E1E1E;
 }
-
+html {
+   height: 100%;
+}
 body {
-   background-color: #d1d1d1;
-   max-width: 900px;
-   margin: 0 auto;
+   background-color: var(--primary);
+   color: var(--secondary);
+   height: 100%;
+   min-height: 600px;
+   position: relative;
 }
-
-img {
-   max-width: 100%;
+.barlow {
+   font-family: 'Barlow Semi Condensed', sans-serif;
 }
-
-#game-announcer {
-   margin-top: 2rem;
-}
-
-.game-display {
-   margin: 2rem 0 ;
-   display: flex;
-   justify-content: space-around;
-}
-
-.weapon-display {
-   height: 150px;
-}
-
-.messages {
+.barlow--bold {
+   font-family: 'Barlow Semi Condensed', sans-serif;
    font-weight: bold;
-   font-size: 1.5rem;
-   font-family: monospace;
-   text-align: center;
-   margin-bottom: 2rem;
 }
-
-.buttons-container {
+.barlow--light {
+   font-family: 'Barlow Semi Condensed', sans-serif;
+   font-weight: 100;
+}
+.sub-heading {
+   font-size: 1.6rem;
+   text-transform: uppercase;
+   text-align: center;
+   margin-bottom: 5.4rem;
+}
+.button {
+   font-weight: 100;
+   font-size: 2rem;
+   text-align: center;
+   text-transform: uppercase;
+   background-color: var(--primary);
+   border: 4px solid var(--secondary);
+   padding: 1rem 6rem;
+   cursor: pointer;
+   transition: background 300ms ease,
+               color 300ms ease;
+}
+.button:hover {
+   background-color: var(--secondary);
+   color: var(--primary);
+}
+.button-reset-container {
+   text-align: center;
+   margin: 10rem auto;
+   padding-bottom: 5rem;
+}
+/*<<< HEADER >>>*/
+.header {
+   text-transform: uppercase;
+   display: flex;
+   flex-direction: column;
+   padding: 2rem;
+   border-bottom: 4px solid var(--secondary);
+   margin: 0 2rem 5rem;
+}
+.header__heading {
+   font-size: 2rem;
+   margin-bottom: 2.9rem;
+}
+.header__scores {
    display: flex;
    justify-content: center;
-   column-gap: 1rem;
 }
-
-.weapon-button {
-   background-color: #e6a565;
-   padding: 1rem;
-   border: none;
-   cursor: pointer;
+.scores__item:first-child {
+   padding-right: 2rem;
+   border-right: 4px solid var(--secondary);
+   margin-right: 2rem;
 }
-
-.weapon-button:enabled:hover, .weapon-button:enabled:focus  {
-   background-color: #fac28a;
+.scores__item {
+   text-align: center;
 }
-
-.weapon-button:disabled {
-   opacity: 0.5;
-   cursor: not-allowed;
+.scores__item p {
+   font-size: 2rem;
 }
-
-.text-center { text-align: center; }
-
-.btn {
-   font-size: 1.2rem;
-   font-family: monospace;
-   font-weight: bold;
+.scores__item p span {
+   font-size: 3rem;
+   display: block;
+}
+/*<<< OPTIONS >>>*/
+.options {
+   display: none;
+}
+.option__item {
+   text-decoration: none;
+   text-align: center;
+   color: var(--secondary);
+   display: block;
+   margin-bottom: 5rem;
+}
+.option__item:hover .option__img-container {
+   transform: scale(1.15);
+}
+.option__item span {
    text-transform: uppercase;
-   background-color: #e6a565;
-   padding: 1rem 1.5rem;
-   border: none;
-   margin: 2rem;
-   cursor: pointer;
-   display: inline-block;
-   visibility: hidden;
+   text-shadow: 
+      -1px -1px 0 white,
+      1px -1px 0 white,
+      -1px 1px 0 white,
+      1px 1px 0 white;
+   font-size: 2.4rem;
+   display: block;
+   margin-top: 2rem;
 }
-
-.btn:hover {
-   background-color: #fac28a;  
+.option__img-container {
+   background-color: white;
+   display: inline-block;
+   border-radius: 50%;
+   padding: 2.5rem;
+   transition: transform 300ms ease-in-out;
+}
+.option__img {
+   width: 50px;
+   display: block;
+   margin: 0 auto;
+}
+/*<<< MATCH RESULT >>>*/
+.match__weapons {
+   margin-bottom: 5.4rem;
+   display: flex;
+   justify-content: center;
+   column-gap: 2.5rem;
+}
+.match__icon {
+   width: 3rem;
+}
+.match__item {
+   text-align: center;
+}
+.match__img-container {
+   background-color: white;
+   display: inline-block;
+   border-radius: 50%;
+   padding: 2.5rem;
+}
+.match__img {
+   width: 50px;
+   display: block;
+   margin: 0 auto;
+}
+.match__item span {
+   text-transform: uppercase;
+   font-size: 1.6rem;
+   display: block;
+   margin-top: 2rem; 
+}
+.play-again {
+   text-align: center;
+}
+.play-again h3 {
+   font-size: 4rem;
+   margin-bottom: 1.2rem;
+}
+/*<<< TABLET DISPLAY >>>*/
+@media only screen and (min-width: 768px) {
+   .sub-heading {
+      font-size: 2.4rem;
+   }
+   /*<<< HEADER >>>*/
+   .header {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 2.4rem;
+      margin: 5rem;
+   }
+   .header__heading {
+      font-size: 4rem;
+      margin-bottom: 0;
+   }
+   .header__scores {
+      align-self: center;
+   }
+   .scores__item p span {
+      font-size: 4rem;
+      display: block;
+   }
+   /*<<< OPTIONS >>>*/
+   .options__button-container {
+      text-align: center;
+   }
+   .option__item {
+      display: inline-block;
+      margin-right: 7.5rem;
+      margin-bottom: 0rem;
+   }
+   .option__item:last-child {
+      margin-right: 0;
+   }
+   .option__img-container {
+      padding: 3rem;
+   }
+   .option__img {
+      width: 100px;
+   }
+   /*<<< MATCH RESULT >>>*/
+   .match__weapons {
+      column-gap: 8rem;
+   }
+   .match__item span {
+      font-size: 2.4rem;
+   }
+   .match__img-container {
+      padding: 3rem;
+   }
+   .match__img {
+      width: 100px;
+   }
+   .match__icon {
+      width: 5rem;
+   }
+   .button-reset-container {
+      text-align: center;
+      margin: 0;
+      padding-bottom: 0;
+      position: fixed;
+      bottom: 3rem;
+      right: 6rem;
+   }
 }
