@@ -12,13 +12,14 @@
    <link rel="stylesheet" href="./reset.css">
    <link rel="stylesheet" href="./styles.css">
    <title>Rock Paper Scissors</title>
-   <!--<script src="rock-paper-scissors.js" defer></script>-->
+   <script src="./rock-paper-scissors.js" rel="text/javascritp" defer></script>
+   <script src="./ui-functionality.js" rel="text/javascritp" defer></script>
    <!--<script src="dom.js" defer></script>-->
 </head>
 <body>
    <header class="header barlow--bold">
       <h1 class="header__heading">Rock<br>Paper<br>Scissors</h1>
-      <div class="header__scores">
+      <div id="scores" class="header__scores">
          <div class="scores__item">
             <p>
                Your Score 
@@ -34,7 +35,7 @@
       </div>
    </header>
    <!-- OPTIONS -->
-   <section class="options">
+   <section id="options" class="options">
       <h2 class="barlow--bold sub-heading">Pick an option</h2>
 
       <div class="options__button-container">
@@ -64,13 +65,13 @@
       </div>
    </section>
    <!-- MATCH RESULT -->
-   <section class="match-result">
-      <h2 id="animated-text" class="barlow--bold sub-heading">Rock, Paper, Scissors!</h2>
+   <section id="match-result" class="match-result">
+      <h2 id="animated-text" class="barlow--bold sub-heading"><span>Rock,</span> <span>Paper,</span> <span>Scissors!</span></h2>
 
-      <div class="match__weapons">
+      <div id="match-weapons" class="match__weapons">
          <div class="match__item barlow--bold">
             <div class="match__img-container">
-               <img src="./images/paper-icon.png" alt="" id="user-picked__img" class="match__img">
+               <img src="./images/paper-icon.png" alt="" id="player-picked__img" class="match__img">
             </div>
             
             <span>You picked</span>
@@ -87,7 +88,7 @@
          </div>
       </div>
 
-      <div class="play-again">
+      <div id="play-again" class="play-again">
          <h3 id="winner-text" class="barlow--bold">YOU WIN</h3>
          <button id="play-again-button" class="button barlow--light">Play Again</button>      
       </div>

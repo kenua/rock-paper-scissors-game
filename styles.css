@@ -83,9 +83,6 @@ body {
    display: block;
 }
 /*<<< OPTIONS >>>*/
-.options {
-   display: none;
-}
 .option__item {
    text-decoration: none;
    text-align: center;
@@ -120,6 +117,9 @@ body {
    margin: 0 auto;
 }
 /*<<< MATCH RESULT >>>*/
+.match-result {
+   display: none;
+}
 .match__weapons {
    margin-bottom: 5.4rem;
    display: flex;
