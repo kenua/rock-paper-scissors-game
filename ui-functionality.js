@@ -16,6 +16,14 @@
    If one of the players gets 5 points, the play again button text should say who
    won the game and the play again button should say reset game, also the reset
    button should disappear on this state.
+
+   4.
+   When one of the players gets 5 points, the text for the "play again" button
+   should say who won the game.
+
+   5.
+   Update the code that makes the UI animation to have more control over it
+   since the user can still click stuff get buggy animations.
 */
 'use strict';
 
@@ -121,6 +129,14 @@ window.addEventListener('DOMContentLoaded', function() {
          winnerText.textContent = 'You lose';
       } else if (matchResult.state === 'draw') {
          winnerText.textContent = 'Draw';
+      } else if (matchResult.state === 'finish') {
+         const { player: playerScore, computer: cpuScore } = game.getScores();
+         const resultText = (playerScore > cpuScore) 
+                           ? 'You got 5 points, you are the winner' 
+                           : 'CPU got 5 points, CPU is the winner';
+
+         winnerText.textContent = resultText;
+         playAgainBtn.textContent = 'Reset Game';
       }
 
       matchResultContainer.style.display = 'block';
@@ -144,7 +160,7 @@ window.addEventListener('DOMContentLoaded', function() {
       playAgainContainer.style.opacity = 1;
 
       // update score
-      if (winnerText.textContent !== 'Draw') {
+      if (matchResult.state !== 'draw') {
          await scoresContainer.animate(bounce.frames, bounce.options).finished;
          playerScore.textContent = game.getScores().player;
          cpuScore.textContent = game.getScores().computer;
@@ -154,7 +170,10 @@ window.addEventListener('DOMContentLoaded', function() {
    async function showOptions (e) {
       e.preventDefault();
 
-      if (matchResult.state === 'finish') resetGame();
+      if (matchResult.state === 'finish') {
+         resetGame();
+         playAgainBtn.textContent = 'Play again';
+      }
 
       await matchResultContainer.animate(fadeOut.frames, fadeOut.options).finished;
       matchResultContainer.style.display = 'none';
