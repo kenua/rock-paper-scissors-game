@@ -50,6 +50,62 @@ window.addEventListener('DOMContentLoaded', function() {
    const playAgainBtn = document.getElementById('play-again-button');
    const resetBtn = document.getElementById('reset-button');
 
+   const animation = {
+      fadeOut({node, delay, options}) {
+         return new Promise((res, rej) => {
+            const fade = (element) => {
+               if (element.style.opacity === '0') {
+                  for (let key in options) {
+                     element.style[key] = options[key];
+                  }
+   
+                  return res('done');
+               }
+            
+               if (!element.style.opacity) {
+                  element.style.opacity = 1;
+               } else {
+                  let opacityValue = +element.style.opacity;
+                  element.style.opacity = opacityValue -  0.05;
+               }
+      
+               requestAnimationFrame(() => fade(element));
+            };
+   
+            setTimeout(() => fade(node), delay);
+         });
+      },
+      fadeIn({node, delay}) {
+         return new Promise((res, rej) => {
+            const animate = (element) => {
+               let opacityValue = +element.style.opacity;
+               let translateValue = +element.style.transform.match(/\d+/)[0];
+   
+   
+               if (+element.style.opacity < 1) {
+                  opacityValue = opacityValue + 0.05;
+                  element.style.opacity = opacityValue;
+               }
+   
+               if (translateValue > 0) {
+                  translateValue = translateValue - 5;
+                  element.style.transform = `translateY(${translateValue}px)`;
+               }
+   
+               if (opacityValue === 1 && translateValue === 0) {
+                  return res('done');
+               }
+      
+               requestAnimationFrame(() => animate(element));
+            };
+   
+            node.style.opacity = 0;
+            node.style.transform = 'translateY(100px)';
+            setTimeout(() => animate(node), delay);
+         });
+      },
+   };
+
    const fadeOut = {
       frames: [
          { opacity: 1, transform: 'translate(0px, 0px)', },
@@ -196,4 +252,22 @@ window.addEventListener('DOMContentLoaded', function() {
       await optionsContainer.animate(fadeIn.frames, {...fadeIn.options}).finished;
       optionsContainer.style.opacity = 1;      
    }
+   
+   /*
+   const heading = document.querySelector('.header__heading');
+   (async function() {
+      await animation.fadeOut({
+         node: heading, 
+         delay: 1500, 
+         options: {display: 'none'},
+      });
+      console.log('This message appears when heading disappears!');
+      heading.style.display = 'block';
+      await animation.fadeIn({
+         node: heading, 
+         delay: 1000,
+      });
+      console.log('Wait for me!');
+   })();
+   */
 });
