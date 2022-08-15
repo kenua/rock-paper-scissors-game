@@ -179,10 +179,10 @@ window.addEventListener('DOMContentLoaded', function() {
       } else if (matchResult.state === 'finish') {
          const { player: playerScore, computer: cpuScore } = game.getScores();
          const resultText = (playerScore > cpuScore) 
-                           ? 'You got 5 points, you are the winner' 
-                           : 'CPU got 5 points, CPU is the winner';
+                           ? 'You got 5 points,<br> you are the winner' 
+                           : 'CPU got 5 points,<br> CPU is the winner';
 
-         winnerText.textContent = resultText;
+         winnerText.innerHTML = resultText;
          playAgainBtn.textContent = 'Reset Game';
       }
 
