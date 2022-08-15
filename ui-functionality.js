@@ -50,6 +50,7 @@ window.addEventListener('DOMContentLoaded', function() {
    const playAgainBtn = document.getElementById('play-again-button');
    const resetBtn = document.getElementById('reset-button');
 
+   let canClick = true;
    const animation = {
       fadeOut({node, delay, options}) {
          return new Promise((res, rej) => {
@@ -58,7 +59,8 @@ window.addEventListener('DOMContentLoaded', function() {
                   for (let key in options) {
                      element.style[key] = options[key];
                   }
-   
+                  
+                  canClick = true;
                   return res('done');
                }
             
@@ -71,7 +73,8 @@ window.addEventListener('DOMContentLoaded', function() {
       
                requestAnimationFrame(() => fade(element));
             };
-   
+            
+            canClick = false;
             setTimeout(() => fade(node), delay);
          });
       },
@@ -93,66 +96,49 @@ window.addEventListener('DOMContentLoaded', function() {
                }
    
                if (opacityValue === 1 && translateValue === 0) {
+                  canClick = true;
                   return res('done');
                }
       
                requestAnimationFrame(() => animate(element));
             };
-   
+            
+            canClick = false;
             node.style.opacity = 0;
             node.style.transform = 'translateY(100px)';
             setTimeout(() => animate(node), delay);
          });
       },
-   };
+      blink({node, delay, options}) {
+         return new Promise((res, rej) => {
+            const animate = (element) => {
+                  element.style.opacity = 1;
+               
+                  for (let key in options) {
+                     element.style[key] = options[key];
+                  }
 
-   const fadeOut = {
-      frames: [
-         { opacity: 1, transform: 'translate(0px, 0px)', },
-         { opacity: 0, transform: 'translate(0px, -100px)', },
-      ],
-      options: {
-         duration: 700,
-         easing: 'ease',
-      },
-   };
-   const fadeIn = {
-      frames: [
-         { opacity: 0, transform: 'translate(0px, 100px)', },
-         { opacity: 1, transform: 'translate(0px, 0px)', },
-      ],
-      options: {
-         duration: 700,
-         easing: 'ease',
-      },
-   };
-   const blink = {
-      frames: [
-         { opacity: 0,},
-         { opacity: 1,},
-      ],
-      options: {
-         duration: 1,
-         easing: 'linear',
-         delay: 700,
-      }
-   }
-   const bounce = {
-      frames: [
-         { transform:'translateY(0%)',   offset: 0.7 },
-         { transform:'translateY(-20%)', offset: 0.8 },
-         { transform:'translateY(0%)',   offset: 0.9 },
-         { transform:'translateY(-5%)',  offset: 0.95},
-         { transform:'translateY(0)', },
-      ],
-      options: {
-         duration: 500,
-         easing: 'ease-out',
+                  canClick = true;
+                  return res('done');
+            };
+
+            canClick = false;
+            node.style.opacity = 0;
+            setTimeout(() => animate(node), delay);
+         });
       },
    };
 
    let matchResult;
 
+   window.addEventListener('click', e => {
+      if (!canClick) {
+         e.stopImmediatePropagation();
+         e.preventDefault();
+      }
+   }, {
+      capture: true,
+   });
    rockBtn.addEventListener('click', e => {
       e.preventDefault();
       pickWeapon('rock');
@@ -172,8 +158,13 @@ window.addEventListener('DOMContentLoaded', function() {
       matchResult = game.play(weapon);
 
       // hide options and show match result
-      await optionsContainer.animate(fadeOut.frames, fadeOut.options).finished;
-      optionsContainer.style.display = 'none';
+      await animation.fadeOut({
+         node: optionsContainer,
+         options: {
+            display: 'none',
+         },
+      });
+
       matchWeaponsContainer.style.opacity = 0;
       playAgainContainer.style.opacity = 0;
       playerPickedImg.src = `./images/${weapon}-icon.png`;
@@ -201,23 +192,31 @@ window.addEventListener('DOMContentLoaded', function() {
       rockText.style.opacity = 0;
       paperText.style.opacity = 0;
       scissorsText.style.opacity = 0;
-      await rockText.animate(blink.frames, blink.options).finished;
-      rockText.style.opacity = 1;
-      await paperText.animate(blink.frames, blink.options).finished;
-      paperText.style.opacity = 1;
-      await scissorsText.animate(blink.frames, blink.options).finished;
-      scissorsText.style.opacity = 1;
-
-      await matchWeaponsContainer.animate(fadeIn.frames, {...fadeIn.options, delay: 700}).finished;
-      matchWeaponsContainer.style.opacity = 1;
+      await animation.blink({
+         node: rockText,
+         delay: 700,
+      });
+      await animation.blink({
+         node: paperText,
+         delay: 700,
+      });
+      await animation.blink({
+         node: scissorsText,
+         delay: 700,
+      });
+      await animation.fadeIn({
+         node: matchWeaponsContainer,
+         delay: 700,
+      });
 
       // show winner
-      await playAgainContainer.animate(fadeIn.frames, {...fadeIn.options, delay: 1400}).finished;
-      playAgainContainer.style.opacity = 1;
+      await animation.fadeIn({
+         node: playAgainContainer,
+         delay: 1400,
+      });
 
       // update score
       if (matchResult.state !== 'draw') {
-         await scoresContainer.animate(bounce.frames, bounce.options).finished;
          playerScore.textContent = game.getScores().player;
          cpuScore.textContent = game.getScores().computer;
       }
@@ -229,45 +228,42 @@ window.addEventListener('DOMContentLoaded', function() {
       if (matchResult.state === 'finish') {
          resetGame();
          playAgainBtn.textContent = 'Play again';
+         return;
       }
 
-      await matchResultContainer.animate(fadeOut.frames, fadeOut.options).finished;
-      matchResultContainer.style.display = 'none';
+      await animation.fadeOut({
+         node: matchResultContainer,
+         options: {
+            display: 'none',
+            opacity: 1,
+         },
+      });
+      
       optionsContainer.style.display = 'block';
-      optionsContainer.style.opacity = 0;
-      await optionsContainer.animate(fadeIn.frames, {...fadeIn.options}).finished;
-      optionsContainer.style.opacity = 1;
+      
+      await animation.fadeIn({
+         node: optionsContainer,
+      });
    }
 
    async function resetGame () {
       game.resetScores();
-      scoresContainer.animate(bounce.frames, bounce.options).finished;
       playerScore.textContent = 0;
       cpuScore.textContent = 0;
 
-      await matchResultContainer.animate(fadeOut.frames, fadeOut.options).finished;
-      matchResultContainer.style.display = 'none';
-      optionsContainer.style.display = 'block';
-      optionsContainer.style.opacity = 0;
-      await optionsContainer.animate(fadeIn.frames, {...fadeIn.options}).finished;
-      optionsContainer.style.opacity = 1;      
-   }
-   
-   /*
-   const heading = document.querySelector('.header__heading');
-   (async function() {
       await animation.fadeOut({
-         node: heading, 
-         delay: 1500, 
-         options: {display: 'none'},
+         node: matchResultContainer,
+         options: {
+            display: 'none',
+            opacity: 1,
+         },
       });
-      console.log('This message appears when heading disappears!');
-      heading.style.display = 'block';
-      await animation.fadeIn({
-         node: heading, 
-         delay: 1000,
+      optionsContainer.style.display = 'block';
+      animation.fadeIn({
+         node: optionsContainer,
+         options: {
+            opacity: 1,
+         },
       });
-      console.log('Wait for me!');
-   })();
-   */
+   }
 });
