@@ -1,30 +1,3 @@
-/*
-   MAKE UI INTERACTIVE
-
-   1. 
-   When the user clicks on a weapon, run game.play method and pass the 
-   option that the user selected and hide that section. 
-
-   2. 
-   Once the app it's in the second screen, the text that says "Rock, Pape, Scissors!"
-   should be animated to show the first word, then the second, then the third. After
-   that the picked weapons by the user and computer fade in, then the scores are 
-   updated and then the button to play again fades in. Everything should happen in 
-   this speficic order.
-
-   3. 
-   If one of the players gets 5 points, the play again button text should say who
-   won the game and the play again button should say reset game, also the reset
-   button should disappear on this state.
-
-   4.
-   When one of the players gets 5 points, the text for the "play again" button
-   should say who won the game.
-
-   5.
-   Update the code that makes the UI animation to have more control over it
-   since the user can still click stuff get buggy animations.
-*/
 'use strict';
 
 window.addEventListener('DOMContentLoaded', function() {

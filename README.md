@@ -1,2 +1,4 @@
 # Rock Paper Scissors Game
-Rock paper scissors game in the browser.
+<img src="./rock-paper-scissors-screenshot.png" alt="Rock Paper Scissors Game screenshot" width="800">
+
+This is a rock paper scissors game in vanilla Javascript.
